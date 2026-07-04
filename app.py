@@ -4,7 +4,6 @@ from services.openai_service import OpenAIService
 from services.search_service import SearchService
 from utils.profile_loader import load_profile
 
-
 from utils.ui import (
     render_header,
     render_sidebar
@@ -20,7 +19,9 @@ from utils.config import (
     AZURE_EMBEDDING_DEPLOYMENT
 )
 
-# --- Page setup ---
+# -------------------------------
+# Page Setup
+# -------------------------------
 st.set_page_config(
     page_title="Ravi Verma | Professional Portfolio",
     page_icon="r2.png"
@@ -40,28 +41,41 @@ openai_service = OpenAIService(
 )
 
 profile = load_profile()
+
 render_header()
 render_sidebar()
 
-# --- Chat history ---
+# -------------------------------
+# Chat History
+# -------------------------------
 if "messages" not in st.session_state:
     st.session_state.messages = [
         {
             "role": "assistant",
-            "content": "👋 Hi! I'm Ravi's AI assistant. Ask me anything about his experience, projects, Azure expertise, certifications, or skills."
+            "content": (
+                "👋 Hi! I'm Ravi's AI assistant. "
+                "Ask me anything about his experience, projects, "
+                "Azure expertise, certifications, or skills."
+            )
         }
     ]
 
-# --- Render chat messages ---
-for msg in st.session_state.messages:
-    with st.chat_message(msg["role"]):
-        st.markdown(msg["content"])
+# -------------------------------
+# Render Previous Messages
+# -------------------------------
+for message in st.session_state.messages:
+    with st.chat_message(message["role"]):
+        st.markdown(message["content"])
 
-# --- Preset Question ---
+# -------------------------------
+# Preset Question
+# -------------------------------
 if "preset_question" not in st.session_state:
     st.session_state["preset_question"] = ""
 
-# --- Chat Input ---
+# -------------------------------
+# Chat Input
+# -------------------------------
 user_input = st.chat_input(
     "Ask about my Azure experience, .NET projects, certifications, or AI solutions..."
 )
@@ -70,9 +84,12 @@ if not user_input and st.session_state["preset_question"]:
     user_input = st.session_state["preset_question"]
     st.session_state["preset_question"] = ""
 
-# --- Process User Input ---
+# -------------------------------
+# Process User Input
+# -------------------------------
 if user_input:
 
+    # Display user message
     st.session_state.messages.append(
         {
             "role": "user",
@@ -84,54 +101,72 @@ if user_input:
         st.markdown(user_input)
 
     try:
+
         with st.spinner("Preparing your answer..."):
 
-            
+            # Generate embedding
             embedding = openai_service.generate_embedding(user_input)
 
+            # Retrieve context
             context = search_service.search_documents(
                 query=user_input,
                 embedding=embedding
             )
+
             context = f"""
-            PROFILE INFORMATION
+PROFILE INFORMATION
 
-            {profile}
+{profile}
 
-            ====================================================
+====================================================
 
-            PROJECT / EXPERIENCE INFORMATION
+PROJECT / EXPERIENCE INFORMATION
 
-            {context}
-            """
+{context}
+"""
 
-            with st.chat_message("assistant"):
-                placeholder = st.empty()
-                full_response = ""
+        # Stream response
+        with st.chat_message("assistant"):
 
-                try:
-                    stream = openai_service.generate_answer(
-                        question=user_input,
-                        context=context,
-                        history=st.session_state.messages
-                    )
+            placeholder = st.empty()
+            full_response = ""
 
-                    for chunk in stream:
-                        if chunk.choices:
-                            delta = chunk.choices[0].delta.content
-                            if delta:
-                                full_response += delta
-                                placeholder.markdown(full_response + "▌")
-
-                    placeholder.markdown(full_response)
-
-                except Exception as ex:
-                    full_response = f"⚠️ Error: {ex}"
-                    placeholder.markdown(full_response)
-
-            st.session_state.messages.append(
-                {
-                    "role": "assistant",
-                    "content": full_response
-                }
+            stream = openai_service.generate_answer(
+                question=user_input,
+                context=context,
+                history=st.session_state.messages
             )
+
+            for chunk in stream:
+
+                if chunk.choices:
+
+                    delta = chunk.choices[0].delta.content
+
+                    if delta:
+                        full_response += delta
+                        placeholder.markdown(full_response + "▌")
+
+            placeholder.markdown(full_response)
+
+        # Save assistant response
+        st.session_state.messages.append(
+            {
+                "role": "assistant",
+                "content": full_response
+            }
+        )
+
+    except Exception as ex:
+
+        error = f"⚠️ Error: {ex}"
+
+        with st.chat_message("assistant"):
+            st.error(error)
+
+        st.session_state.messages.append(
+            {
+                "role": "assistant",
+                "content": error
+            }
+        )
