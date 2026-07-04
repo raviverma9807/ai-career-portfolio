@@ -105,21 +105,33 @@ if user_input:
             {context}
             """
 
-            answer = openai_service.generate_answer(
-                question=user_input,
-                context=context,
-                history=st.session_state.messages
+            with st.chat_message("assistant"):
+                placeholder = st.empty()
+                full_response = ""
+
+                try:
+                    stream = openai_service.generate_answer(
+                        question=user_input,
+                        context=context,
+                        history=st.session_state.messages
+                    )
+
+                    for chunk in stream:
+                        if chunk.choices:
+                            delta = chunk.choices[0].delta.content
+                            if delta:
+                                full_response += delta
+                                placeholder.markdown(full_response + "▌")
+
+                    placeholder.markdown(full_response)
+
+                except Exception as ex:
+                    full_response = f"⚠️ Error: {ex}"
+                    placeholder.markdown(full_response)
+
+            st.session_state.messages.append(
+                {
+                    "role": "assistant",
+                    "content": full_response
+                }
             )
-
-    except Exception as ex:
-        answer = f"⚠️ Error: {ex}"
-
-    st.session_state.messages.append(
-        {
-            "role": "assistant",
-            "content": answer
-        }
-    )
-
-    with st.chat_message("assistant"):
-        st.markdown(answer)
