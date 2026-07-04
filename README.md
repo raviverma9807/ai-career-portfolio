@@ -42,26 +42,30 @@ The application retrieves relevant information from an indexed knowledge base us
 # 🏗 Architecture
 
 ```
-                User
+                                User
                   │
                   ▼
-          Streamlit Web App
+        Streamlit Web Application
                   │
                   ▼
-      Azure OpenAI Embeddings
+      Azure OpenAI (Embeddings)
                   │
                   ▼
-         Azure AI Search
-     (Hybrid + Vector + Semantic)
+           Azure AI Search
+     Hybrid + Vector + Semantic
                   │
                   ▼
-       Relevant Document Chunks
+      Indexed Knowledge Base
+        (Azure Blob Storage)
                   │
                   ▼
-        Azure OpenAI GPT Model
+     Retrieved Relevant Chunks
                   │
                   ▼
-      Context-Aware AI Response
+      Azure OpenAI GPT Model
+                  │
+                  ▼
+         Context-aware Answer
 ```
 
 ---
