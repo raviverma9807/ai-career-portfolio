@@ -3,3 +3,21 @@
 ################################################################################
 
 /.vs
+
+
+# Virtual environment
+.venv/
+
+# Streamlit secrets
+.streamlit/secrets.toml
+
+# Python cache
+__pycache__/
+*.pyc
+
+# VS Code
+.vscode/
+
+# OS files
+.DS_Store
+Thumbs.db

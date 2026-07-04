@@ -163,6 +163,32 @@ The model generates a grounded response without hallucinating information outsid
 
 ---
 
+## 🧠 Retrieval-Augmented Generation (RAG) Pipeline
+
+This project uses a Retrieval-Augmented Generation (RAG) architecture to generate accurate, grounded responses based on my professional documents.
+
+### Workflow
+
+1. User submits a question through the Streamlit application.
+2. Azure OpenAI generates an embedding for the user's query.
+3. Azure AI Search performs **Hybrid Search**, combining:
+   - Keyword Search
+   - Vector Search
+   - Semantic Ranking
+4. The most relevant document chunks are retrieved from the indexed knowledge base.
+5. Retrieved context is injected into the system prompt.
+6. Azure OpenAI GPT generates a context-aware response using only the retrieved information.
+7. The response is displayed to the user.
+
+### Benefits
+
+- Reduces hallucinations
+- Ensures responses are grounded in indexed documents
+- Provides accurate, recruiter-focused answers
+- Supports natural language interaction over professional knowledge
+
+---
+
 # 📁 Project Structure
 
 ```
@@ -181,6 +207,52 @@ ask-ravi-bot/
 
 ---
 
+# ▶ Running Locally
+
+```bash
+git clone https://github.com/raviverma9807/ask-ravi-bot.git
+
+cd ask-ravi-bot
+
+pip install -r requirements.txt
+
+streamlit run app.py
+```
+
+Configure the following environment variables before running:
+
+- Azure OpenAI Endpoint
+- Azure OpenAI Key
+- GPT Deployment
+- Embedding Deployment
+- Azure AI Search Endpoint
+- Azure AI Search Key
+- Azure AI Search Index
+
+---
+## 📸 Screenshots
+
+### Home
+
+![Home](screenshots/home.png)
+
+### Azure Experience
+
+![Azure Experience](screenshots/azure-experience.png)
+
+### AI Project
+
+![AI Project](screenshots/ai-project.png)
+
+### Work Experience
+
+![Work Experience](screenshots/work-experience.png)
+
+### Certifications
+
+![Certifications](screenshots/certifications.png)
+
+---
 
 # 🎯 Future Enhancements
 
