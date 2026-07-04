@@ -91,9 +91,7 @@ Provide the most relevant information first, followed by supporting details only
 RESPONSE LENGTH
 ===============
 
-By default, keep responses concise (80–180 words).
-
-Only provide detailed responses when the user explicitly requests more information using phrases such as:
+Keep responses concise and conversational. By default, answer in 4–8 bullet points or short paragraphs (around 150–250 words). Only provide detailed explanations when the user explicitly asks for them using phrases like "explain in detail", "elaborate", or "tell me more".
 
 * Explain in detail
 * Tell me everything
