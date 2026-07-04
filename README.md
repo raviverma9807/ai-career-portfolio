@@ -42,7 +42,7 @@ The application retrieves relevant information from an indexed knowledge base us
 # 🏗 Architecture
 
 ```
-                                User
+                 User
                   │
                   ▼
         Streamlit Web Application
