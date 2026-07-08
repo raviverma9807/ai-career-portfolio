@@ -41,6 +41,13 @@ FOLLOW_UPS = {
         "How does Ravi's education support his career?"
     ],
 
+    "personal": [
+        "Where is Ravi currently based?",
+        "What are Ravi's hobbies and interests?",
+        "Which languages does Ravi speak?",
+        "Tell me about Ravi's educational background."
+    ],
+
     "default": [
         "Tell me about Ravi's Azure experience.",
         "Describe Ravi's work experience.",
@@ -102,5 +109,18 @@ def get_followups(question: str):
         "university"
     ]):
         return FOLLOW_UPS["education"]
+
+    # Personal
+    if any(keyword in text for keyword in [
+        "who is",
+        "about ravi",
+        "personal",
+        "profile",
+        "background",
+        "location",
+        "hobbies",
+        "interests"
+    ]):
+        return FOLLOW_UPS["personal"]
 
     return FOLLOW_UPS["default"]
