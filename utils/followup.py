@@ -63,12 +63,16 @@ def get_followups(question: str):
 
     # AI
     if any(keyword in text for keyword in [
-        "ai",
+        "artificial intelligence",
+        "azure openai",
         "openai",
+        "generative ai",
+        "ai project",
         "rag",
-        "career portfolio",
-        "chatbot",
-        "generative ai"
+        "retrieval-augmented generation",
+        "hybrid search",
+        "vector search",
+        "semantic search"
     ]):
         return FOLLOW_UPS["ai"]
 
@@ -115,6 +119,8 @@ def get_followups(question: str):
         "who is",
         "about ravi",
         "personal",
+        "personal details",
+        "contact",
         "profile",
         "background",
         "location",
