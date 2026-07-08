@@ -1,4 +1,5 @@
 import streamlit as st
+from utils.followup import get_followups
 
 from services.openai_service import OpenAIService
 from services.search_service import SearchService
@@ -80,13 +81,19 @@ user_input = st.chat_input(
     "Ask about my Azure experience, .NET projects, certifications, or AI solutions..."
 )
 
-if not user_input and st.session_state["preset_question"]:
-    user_input = st.session_state["preset_question"]
-    st.session_state["preset_question"] = ""
+if not user_input:
+    user_input = st.session_state.pop("preset_question", None)
 
-# -------------------------------
+
+# ----------------------------------------
+# Initialize followups
+# ----------------------------------------
+if "followups" not in st.session_state:
+    st.session_state["followups"] = []
+
+# ----------------------------------------
 # Process User Input
-# -------------------------------
+# ----------------------------------------
 if user_input:
 
     # Display user message
@@ -107,7 +114,7 @@ if user_input:
             # Generate embedding
             embedding = openai_service.generate_embedding(user_input)
 
-            # Retrieve context
+            # Retrieve relevant context
             context = search_service.search_documents(
                 query=user_input,
                 embedding=embedding
@@ -125,7 +132,9 @@ PROJECT / EXPERIENCE INFORMATION
 {context}
 """
 
-        # Stream response
+        # ------------------------------
+        # Stream assistant response
+        # ------------------------------
         with st.chat_message("assistant"):
 
             placeholder = st.empty()
@@ -149,13 +158,18 @@ PROJECT / EXPERIENCE INFORMATION
 
             placeholder.markdown(full_response)
 
+        # ------------------------------
         # Save assistant response
+        # ------------------------------
         st.session_state.messages.append(
             {
                 "role": "assistant",
                 "content": full_response
             }
         )
+
+        # Generate follow-up questions
+        st.session_state["followups"] = get_followups(user_input)
 
     except Exception as ex:
 
@@ -170,3 +184,27 @@ PROJECT / EXPERIENCE INFORMATION
                 "content": error
             }
         )
+
+        st.session_state["followups"] = []
+
+# ----------------------------------------
+# Follow-up Questions
+# ----------------------------------------
+if st.session_state["followups"]:
+
+    st.markdown("### 💡 Suggested Follow-up Questions")
+
+    cols = st.columns(2)
+
+    for i, question in enumerate(st.session_state["followups"]):
+
+        with cols[i % 2]:
+
+            if st.button(
+                question,
+                key=f"followup_{i}",
+                use_container_width=True
+            ):
+                st.session_state["preset_question"] = question
+                st.session_state["followups"] = []
+                st.rerun() 
