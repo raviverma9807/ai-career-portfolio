@@ -67,7 +67,7 @@ def get_followups(question: str):
         "azure openai",
         "openai",
         "generative ai",
-        "ai project",
+        "ai-powered projects",
         "rag",
         "retrieval-augmented generation",
         "hybrid search",
