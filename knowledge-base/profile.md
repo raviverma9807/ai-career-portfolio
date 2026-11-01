@@ -4,7 +4,7 @@
 
 My name is Ravi Verma.
 
-I am a Software Engineer with 5+ years of professional experience in designing and developing cloud-native applications using Microsoft Azure and .NET technologies. I specialize in building scalable APIs, event-driven systems, and microservices for enterprise applications.
+I am a Software Engineer with 6+ years of professional experience in designing and developing cloud-native applications using Microsoft Azure and .NET technologies. I specialize in building scalable APIs, event-driven systems, and microservices for enterprise applications.
 
 I am currently working as a Consultant at Capgemini India.
 
@@ -12,7 +12,7 @@ I am currently working as a Consultant at Capgemini India.
 
 ## Professional Highlights
 
-- Microsoft Certified Azure .NET Developer with 5.5+ years of experience building cloud-native enterprise applications.
+- Microsoft Certified Azure .NET Developer with 6+ years of experience building cloud-native enterprise applications.
 - Expertise in C#, .NET Core, ASP.NET Core, .NET 8, Azure Functions, Azure Service Bus, Event Hub, API Management, and distributed systems.
 - Designed scalable microservices, REST APIs, and event-driven architectures for enterprise solutions.
 - Built an AI-powered Professional Portfolio using Azure OpenAI, Azure AI Search, Hybrid Search (Semantic + Vector Search), text-embedding-3 embeddings, Retrieval-Augmented Generation (RAG), and Prompt Engineering.
@@ -125,6 +125,7 @@ Detailed project information is available in the project documents.
 
 ## Microsoft Certifications
 
+* Microsoft Certified: Azure Solution Architect (AZ-305)
 * Microsoft Certified: Azure Developer Associate (AZ-204)
 * Microsoft Certified: Azure Administrator Associate (AZ-104)
 * Microsoft Certified: Azure Fundamentals (AZ-900)
